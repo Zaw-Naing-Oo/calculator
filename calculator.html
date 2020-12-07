@@ -5,50 +5,189 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator</title>
     <style>
-        .calc-key{
-            background-color: grey;
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-size: 30px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        body{
+            background-color: black;
+        }
+        .cal{
+            width: 450px;
+            margin: 100px auto;
+        }
+        .display-box{
+            color: white;
+            text-align: right;
+            font-size: 60px;
+            padding: 20px;
+            margin-right: 30px;
+        }
+        
+        
+        .key{
+            width: 90px;
+            height: 90px;
+            text-align: center;
+            border: 1px solid black;
+            line-height: 90px;
+            border-radius: 90px;
+            margin: 5px;
+            background-color: #333333;
+            color: #ffffff;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .key:active{
+            background-color: white;
+            color: black;
+        }
+
+        .keypad-table tr:first-child .key {
+            background-color: #3a5568;
+        }
+
+        .keypad-table tr:first-child .key:active {
+            background-color:white;
+            color: black;
+        }
+
+        .keypad-table tr td:last-child .key{
+            background-color: rgb(34, 138, 57);
+        }
+
+        .keypad-table tr td:last-child .key:active{
+            background-color: white;
+            color: black;
         }
     </style>
 </head>
 <body>
     <div class="cal">
-        <h1 class="display-box"></h1>
-        <div class="keypad"></div>
+        <div class="display-box">0</div>
+        <div class="keypad">
+            <table class="keypad-table">
+                <tr>
+                    <td>
+                        <div class="key" onclick="allClear()">AC</div>
+                    </td>
+                    <td>
+                        <div class="key" onclick="clearLast()">C</div>
+                    </td>
+                    <td>
+                        <div class="key" onclick="showDisplay('%')">%</div>
+                    </td>
+                    <td>
+                        <div class="key" onclick="showDisplay('/')">&#247</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="key" onclick="showDisplay(7)">7</div>
+                    </td>
+                    <td>
+                        <div class="key" onclick="showDisplay(8)">8</div>
+                    </td>
+                    <td>
+                        <div class="key" onclick="showDisplay(9)">9</div>
+                    </td>
+                    <td>
+                        <div class="key" onclick="showDisplay('*')">x</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="key" onclick="showDisplay(4)">4</div>
+                    </td>
+                    <td>
+                        <div class="key" onclick="showDisplay(5)">5</div>
+                    </td>
+                    <td>
+                        <div class="key" onclick="showDisplay(6)">6</div>
+                    </td>
+                    <td>
+                        <div class="key" onclick="showDisplay('-')">-</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="key" onclick="showDisplay(1)">1</div>
+                    </td>
+                    <td>
+                        <div class="key" onclick="showDisplay(2)">2</div>
+                    </td>
+                    <td>
+                        <div class="key" onclick="showDisplay(3)">3</div>
+                    </td>
+                    <td>
+                        <div class="key" onclick="showDisplay('+')">+</div>
+                    </td>
+                </tr>
+                <tr>
+                    
+                    <td colspan="2">
+                        <div class="key" style="width: 190px;" onclick="showDisplay(0)" >0</div>
+                    </td>
+                    <td>
+                        <div class="key" onclick="showDisplay('.')">.</div>
+                    </td>
+                    <td>
+                        <div class="key" onclick="calculate()">=</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
-   
-    
 
     <script>
+
         let displayBox = document.querySelector(".display-box");
-        let keyPad  = document.querySelector(".keypad");
-        let calcKey = ["+","-","*","/","="];
+        let operator = ["+","-","/","*","%","."];
 
         function showDisplay(x){
-             displayBox.innerHTML  += x;
-        }
+            let current = displayBox.innerHTML;
+            let lastIndex = current[current.length-1];
+            
+            if(displayBox.innerHTML == 0){
+                return displayBox.innerHTML = x;
+            }else if(operator.includes(x) && operator.includes(lastIndex)){
+                return displayBox.innerHTML = current.substring(0,current.length-1) + x;
+            }
+            
+            
+                return displayBox.innerHTML += x;
+            
+        };
 
         function calculate(){
-             let calcText = displayBox.innerHTML;
-             displayBox.innerHTML  = eval(calcText);
-        }
-
-        for(let i = 0; i<= 9; i++){
-            keyPad.innerHTML += `<button class = "key numb-key" onclick = 'showDisplay(${i})'>${i}</button>`
-        }
-
-        calcKey.map((arimtKey) => {
-            if(arimtKey == "="){
-                keyPad.innerHTML += `<button class  ="key calc-key" onclick = "calculate()">${arimtKey}</button>`;
-            }else{
-                keyPad.innerHTML += `<button class  ="key calc-key" onclick = "showDisplay('${arimtKey}')">${arimtKey}</button>`;
-            }
-        });
+            let current = displayBox.innerHTML;
+            displayBox.innerHTML = eval(current);
             
-        
+        };
+
+        function allClear(){
+            displayBox.innerHTML = 0;
+        };
+
+        function clearLast(){
+            let current = displayBox.innerHTML;
+            if(current.length == 1){
+                 displayBox.innerHTML = 0;
+            }else{
+                displayBox.innerHTML = current.substring(0,current.length-1);
+            }
+            
+        };
+
+
+
+
+
 
     </script>
-
-
-
 </body>
 </html>
